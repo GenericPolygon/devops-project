@@ -1,0 +1,10 @@
+{
+  "name": "devops-project",
+  "version": "1.0.0",
+  "description": "Minimal Node app for Jenkins CI/CD demo",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "test": "echo \"No tests yet\""
+  }
+}
