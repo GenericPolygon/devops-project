@@ -16,12 +16,7 @@ pipeline {
         stage('Install Backend Dependencies') {
             steps {
                 dir("${BACKEND_DIR}") {
-                    // Cache node_modules for backend
-                    cache(maxCacheSize: 2, caches: [
-                        cacheEntry(path: 'node_modules', key: 'backend-deps', fallbackKeys: ['backend'])
-                    ]) {
-                        bat 'npm install'
-                    }
+                    bat 'npm install'
                 }
             }
         }
@@ -29,12 +24,7 @@ pipeline {
         stage('Install Frontend Dependencies') {
             steps {
                 dir("${FRONTEND_DIR}") {
-                    // Cache node_modules for frontend
-                    cache(maxCacheSize: 2, caches: [
-                        cacheEntry(path: 'node_modules', key: 'frontend-deps', fallbackKeys: ['frontend'])
-                    ]) {
-                        bat 'npm install'
-                    }
+                    bat 'npm install'
                 }
             }
         }
