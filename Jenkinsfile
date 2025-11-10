@@ -4,7 +4,7 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-                git branch: 'main', url: 'https://github.com/GenericPolygon/devops-project.git'
+                git url: 'https://github.com/GenericPolygon/devops-project.git', branch: 'main'
             }
         }
 
@@ -35,19 +35,18 @@ pipeline {
         stage('Test Backend') {
             steps {
                 dir('backend') {
-                    // Run Jest tests; continue even if none exist
                     bat 'npm test --passWithNoTests'
                 }
             }
         }
 
-        stage('Deploy') {
+        stage('Deploy Full Stack App') {
             steps {
-                echo '🚀 Starting backend server...'
+                echo '🚀 Starting full-stack app (backend + frontend)...'
                 dir('backend') {
                     bat 'start /B node index.js'
                 }
-                echo '✅ Deployment simulated successfully (server running in background)'
+                echo '✅ Full-stack app is running at http://localhost:5000'
             }
         }
     }
