@@ -1,11 +1,6 @@
 pipeline {
     agent any
 
-    environment {
-        BACKEND_DIR = "backend"
-        FRONTEND_DIR = "frontend"
-    }
-
     stages {
         stage('Checkout') {
             steps {
@@ -15,7 +10,7 @@ pipeline {
 
         stage('Install Backend Dependencies') {
             steps {
-                dir("${BACKEND_DIR}") {
+                dir('backend') {
                     bat 'npm install'
                 }
             }
@@ -23,7 +18,7 @@ pipeline {
 
         stage('Install Frontend Dependencies') {
             steps {
-                dir("${FRONTEND_DIR}") {
+                dir('frontend') {
                     bat 'npm install'
                 }
             }
@@ -31,7 +26,7 @@ pipeline {
 
         stage('Build Frontend') {
             steps {
-                dir("${FRONTEND_DIR}") {
+                dir('frontend') {
                     bat 'npm run build'
                 }
             }
@@ -39,24 +34,27 @@ pipeline {
 
         stage('Test Backend') {
             steps {
-                dir("${BACKEND_DIR}") {
-                    bat 'npm test || echo "No tests found, continuing..."'
+                dir('backend') {
+                    // Run Jest tests; continue even if none exist
+                    bat 'npm test --passWithNoTests'
                 }
             }
         }
 
-        stage('Start Backend (optional)') {
+        stage('Deploy') {
             steps {
-                dir("${BACKEND_DIR}") {
-                    bat 'npm start'
+                echo '🚀 Starting backend server...'
+                dir('backend') {
+                    bat 'start /B node index.js'
                 }
+                echo '✅ Deployment simulated successfully (server running in background)'
             }
         }
     }
 
     post {
         success {
-            echo '✅ Build completed successfully!'
+            echo '✅ Build and deployment succeeded!'
         }
         failure {
             echo '❌ Build failed!'
